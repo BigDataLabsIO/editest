@@ -1,44 +1,3 @@
-                var finalObj = [];
-                      var text = x.CONTENT_F;
-                      text = text.replace(/\u001d/g,"\+");
-                      text = text.replace(/\u001c/g,"\'");
-                      text = text.replace(/\u001f/g,"\:");
-                      text = text.replace(/\r\n/g,"");
-                      text = text.replace(/\r/g,"");
-                      var msg = new EDI(text);
-                      var header = new EDI(msg.fetchHeader());
-                      if (msg.bsegments()) var batches = msg.bsegments(); else var batches = msg.msegments();
-                      var agent = "(unknown)";
-                      var country = "(unknown)";
-
-                      if (batches)
-                      {
-                        var batch = batches[0];
-                        finalObj.push({
-                          "SOURCE_ADDRESS": header.fetchSourceString(),
-                          "DESTINATION_ADDRESS": header.fetchDestString(),
-                          "TPR": header.tpr(),
-                          "SENDER_CODE": batch.sender_code(),
-                          "MESSAGE_TYPE": batch.mtype(),
-                          "MESSAGE_ID": batch.mid(),
-                          "MESSAGE_VERSION": batch.mbaseversion() + "." + batch.mtypeversion(),
-                          "ATA_IATA": batch.ata_iata_number(),
-                          "AGENT_CODE": batch.agent_code(),
-                          "SENDER_CITY": batch.sender_city(),
-                          "SENDER_COUNTRY": batch.sender_country(),
-                          "TICKET_NUMBER": batch.tkt(),
-                          "AIRLINE_INFO": batch.aireline_info(),
-                          "PNR": batch.pnr(),
-                          "ACTION_CODE": batch.action_code(),
-                          "ERROR_CODE": batch.error_code(),
-                          "NO_PASSENGERS": batch.no_of_passengers(),
-                          "NO_OF_TVLS": batch.Notvls(),
-                          "FLIGHTS" : JSON.stringify( batch.fetchFlights())
-                        });
-                      }
-
-
-
 var EDI = function(string){
   this.string = string;
 }
@@ -219,3 +178,41 @@ EDI.prototype.e = EDI.prototype.elem  = EDI.prototype.element;
 EDI.prototype.c = EDI.prototype.comp  = EDI.prototype.component;
 EDI.prototype.s = EDI.prototype.str   = EDI.prototype.toString;
 EDI.prototype.n = EDI.prototype.num   = EDI.prototype.toNumber;
+
+
+                var finalObj = [];
+		var text = "";
+                      var msg = new EDI(text);
+                      var header = new EDI(msg.fetchHeader());
+                      if (msg.bsegments()) var batches = msg.bsegments(); else var batches = msg.msegments();
+                      var agent = "(unknown)";
+                      var country = "(unknown)";
+
+                      if (batches)
+                      {
+                        var batch = batches[0];
+                        finalObj.push({
+                          "SOURCE_ADDRESS": header.fetchSourceString(),
+                          "DESTINATION_ADDRESS": header.fetchDestString(),
+                          "TPR": header.tpr(),
+                          "SENDER_CODE": batch.sender_code(),
+                          "MESSAGE_TYPE": batch.mtype(),
+                          "MESSAGE_ID": batch.mid(),
+                          "MESSAGE_VERSION": batch.mbaseversion() + "." + batch.mtypeversion(),
+                          "ATA_IATA": batch.ata_iata_number(),
+                          "AGENT_CODE": batch.agent_code(),
+                          "SENDER_CITY": batch.sender_city(),
+                          "SENDER_COUNTRY": batch.sender_country(),
+                          "TICKET_NUMBER": batch.tkt(),
+                          "AIRLINE_INFO": batch.aireline_info(),
+                          "PNR": batch.pnr(),
+                          "ACTION_CODE": batch.action_code(),
+                          "ERROR_CODE": batch.error_code(),
+                          "NO_PASSENGERS": batch.no_of_passengers(),
+                          "NO_OF_TVLS": batch.Notvls(),
+                          "FLIGHTS" : JSON.stringify( batch.fetchFlights())
+                        });
+
+                      }
+			console.log(finalObj);
+
